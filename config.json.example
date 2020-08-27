@@ -1,5 +1,9 @@
 {
-    "command": "dipy_mask:dwi",
-    "lb": 5,
-    "dwi": "testdata/brad1/data.nii.gz",
+    "order": 1,
+    "mode": "constant",
+    "cval": 0,
+    "new_vox_size": 2,
+    "dwi": "testdata/data.nii.gz",
+    "bvals": "testdata/data.bvals",
+    "bvecs": "testdata/data.bvecs"
 }

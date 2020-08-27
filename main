@@ -1,38 +1,25 @@
 #!/bin/bash
-#PBS -l nodes=1:ppn=6
+#PBS -l nodes=1:ppn=8
 #PBS -l vmem=16gb
 #PBS -l walltime=10:00:00
+
+export SINGULARITYENV_OMP_NUM_THREADS=7
 
 set -e
 set -x
 
-cmd=`jq -r .command config.json`
-case "$cmd" in
+mkdir -p output
+cp $(jq -r .bvecs config.json) output/dwi.bvecs
+cp $(jq -r .bvals config.json) output/dwi.bvals
+chmod -R +w output
 
-    dipy_mask:dwi)
-        cat > script.sh <<EOF
-#!/bin/bash
-dipy_mask --force \
-    --out_dir $PWD \
-    --out_mask mask.nii.gz \
-    $(jq -r .dwi config.json) $(jq -r .lb config.json)
-EOF
-      ;;
-    dipy_mask:tensor)
-        cat > script.sh <<EOF
-#!/bin/bash
-dipy_mask --force \
-    --out_dir $PWD \
-    --out_mask mask.nii.gz \
-    $(jq -r .fa config.json) $(jq -r .lb config.json)
-EOF
-        ;;
-    *)
-        echo "invalid command: $cmd"
-        exit 1
-esac
-
-chmod +x script.sh
-SINGULARITYENV_PYTHONNOUSERSITE=true singularity exec -e docker://brainlife/dipy:1.1.1 ./script.sh
+time singularity exec -e docker://brainlife/dipy:1.1.1 dipy_reslice \
+    --force \
+    --out_dir output \
+    --out_resliced dwi.nii.gz \
+    --order $(jq -r .order config.json) \
+    --mode $(jq -r .mode config.json) \
+    --cval $(jq -r .cval config.json) \
+    $(jq -r .dwi config.json) $(jq -r .new_vox_size config.json)
 
 echo "done"
