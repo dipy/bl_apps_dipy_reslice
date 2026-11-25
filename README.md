@@ -2,6 +2,50 @@
 [![Run on Brainlife.io](https://img.shields.io/badge/Brainlife-bl.app.5-blue.svg)](https://doi.org/10.25663/bl.app.5)
 # Dipy Reslice
 
+<!-- brainlife-app:begin (generated from the App manifest; edit the manifest, not this block) -->
+
+> **Reslices a DWI dataset to a new isotropic voxel size with DIPY dipy_reslice (1.1.1), keeping the bvals and bvecs.**
+
+Runs dipy_reslice to resample a diffusion-weighted image to isotropic voxels of new_vox_size, with configurable interpolation order and boundary handling. Use it before steps that need isotropic or a specific resolution. bvals and bvecs are copied unchanged.
+
+| | |
+|---|---|
+| 📥 **Inputs** | `neuro/dwi` |
+| 📤 **Outputs** | `neuro/dwi` |
+| 🐳 **Container** | `brainlife/dipy:1.1.1` |
+| ⚙️ **Resources** | 8 CPUs |
+| 🔗 **Run it** | [doi.org/10.25663/bl.app.5](https://doi.org/10.25663/bl.app.5) |
+
+#### 📥 Inputs
+
+| Input | Datatype | Required | Description |
+|---|---|---|---|
+| `dwi` | `neuro/dwi` | yes | Diffusion-weighted image with bvals and bvecs. |
+
+#### 📤 Outputs
+
+| Output | Datatype | Description |
+|---|---|---|
+| `output` | `neuro/dwi` | The resliced DWI with the original bvals and bvecs. |
+
+<details>
+<summary><b>⚙️ Parameters</b> (4)</summary>
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `order` | number | `1` | Order of interpolation, from 0 to 5. |
+| `mode` | enum | `constant` | Points outside the boundaries of the input are filled according to the given mode. Options: `constant`, `nearest`, `reflect`, `wrap`. |
+| `cval` | number | `0` | The value used for points outside the boundaries of the input if mode='constant'. |
+| `new_vox_size` | number | `1` | New voxel size. |
+
+</details>
+
+📚 **References used by this App:**
+- Garyfallidis E, et al. Dipy, a library for the analysis of diffusion MRI data. Front Neuroinform 8:8 (2014). [doi:10.3389/fninf.2014.00008](https://doi.org/10.3389/fninf.2014.00008)
+- Avesani P, et al. The open diffusion data derivatives, brain data upcycling via integrated publishing of derivatives and reproducible open cloud services. Sci Data 6:69 (2019). [doi:10.1038/s41597-019-0073-y](https://doi.org/10.1038/s41597-019-0073-y)
+
+<!-- brainlife-app:end -->
+
 The App reslice a diffusion-weighted magnetic resonance imaging (dMRI) dataset to have isotropic voxel size.
 
 ### Authors
